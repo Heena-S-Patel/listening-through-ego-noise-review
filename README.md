@@ -127,8 +127,8 @@ windows of a flight are correlated.
 Python 3.9 or newer is required. The reference results were produced with Python 3.12, NumPy 2.5 and SciPy 1.18.
 
 ```bash
-git clone https://github.com/Heena-S-Patel/Listening-Through-Ego-Noise-A-Review-of-Acoustic-Perception-with-Reproducible-Case-Studies.git
-cd Listening-Through-Ego-Noise-A-Review-of-Acoustic-Perception-with-Reproducible-Case-Studies
+git clone https://github.com/Heena-S-Patel/listening-through-ego-noise-review.git
+cd listening-through-ego-noise-review
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
