@@ -386,7 +386,7 @@ def part_gp(fl, sw, noise_rec, locz):
 def masked_spectrum(sub, Rx, Phi, keep):
     part = loc.SubspaceLocaliser.__new__(loc.SubspaceLocaliser)
     part.A = sub.A[keep]
-    return part.spectrum(Rx[keep], Phi[keep])
+    return part.spectrum(Rx[keep], None if Phi is None else Phi[keep])   # Phi None gives plain MUSIC (method C)
 
 
 def part_combined(fl, ncm, locz, fs):
@@ -398,7 +398,9 @@ def part_combined(fl, ncm, locz, fs):
         errs, share = [], []
         for it in fl.items:
             f0 = it["sp"] * config.SPEED_SCALE
-            if kind == "mask1024":
+            if kind == "none":                      # same code path without a mask, to check it reproduces the main table
+                drop = np.zeros(len(locz.sel), dtype=bool)
+            elif kind == "mask1024":
                 masked = rotor.tonal_mask(f1, f0, it["psd"], locz.band)
                 drop = masked[locz.sel]
             else:                                   # the 4096-point mask of the DREGON flight table, mapped to the nearest 1024-point bin
@@ -408,14 +410,15 @@ def part_combined(fl, ncm, locz, fs):
                 drop = near[locz.sel]
             keep = np.where(~drop)[0]
             share.append(1 - len(keep) / len(drop))
-            phi = ncm.global_ncm if which == "D" else ncm.for_speed(it["ms"])
+            phi = None if which == "C" else ncm.global_ncm if which == "D" else ncm.for_speed(it["ms"])
             a, e = loc.apply_alignment(*locz.peak(masked_spectrum(locz.sub, it["Rx"], phi, keep)), AL_OFFSET)
             errs.append(float(loc.angular_error(a, e, it["gaz"], it["gel"])))
         return dict(summary(errs, [it["flight"] for it in fl.items]), bins_removed_share=float(np.mean(share)))
 
     for kind in ("mask1024", "mask4096"):
-        res[kind] = {w: run(kind, w) for w in ("D", "E")}
-    res["without_mask"] = {"D": fl.score(lambda it: ncm.global_ncm), "E": fl.score(lambda it: ncm.for_speed(it["ms"]))}
+        res[kind] = {w: run(kind, w) for w in ("C", "D", "E")}
+    res["without_mask"] = {"D": fl.score(lambda it: ncm.global_ncm), "E": fl.score(lambda it: ncm.for_speed(it["ms"])),
+                           "C": run("none", "C")}
     save(res, "combined")
 
 

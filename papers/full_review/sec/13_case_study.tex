@@ -10,7 +10,8 @@
 \rev{\Cref{sec:case-locata} applies the same localizers to a robot-head array and a spherical array in a reverberant room at high SNR, to see where a noise model stops helping.}
 %The code reproduces every number and figure in this section.
 \rev{The code reproduces every number and figure in this section, and it is available at \url{https://github.com/Heena-S-Patel/Listening-Through-Ego-Noise-A-Review-of-Acoustic-Perception-with-Reproducible-Case-Studies}.
-We used Python 3.12, NumPy 2.5, SciPy 1.18 and random seed 0.}
+%We used Python 3.12, NumPy 2.5, SciPy 1.18 and random seed 0.
+We used Python 3.12, NumPy 2.5 and SciPy 1.18.}
 
 \begin{table*}[t]
 \centering
@@ -176,7 +177,9 @@ Its Fig.~3b shows one motor at 80 turns/s with noise peaks near 80, 160, 238 and
 Combs at one, two and three times the shaft rate give 35.3, 33.0 and 31.5\%, so B does not depend strongly on it.
 The 40\% cap on removed bins is never reached, since the mask removes 6.6\% of the bins on average and at most 17.7\% in any window.
 Tone masking and noise modeling can also be combined.
-Removing the masked bins before D and E gives 64.5 and 72.6\%, a gain of 4.1 [2.0, 6.4] and 2.8 [0.8, 5.1] points.}
+Removing the masked bins before D and E gives 64.5 and 72.6\%, a gain of 4.1 [2.0, 6.4] and 2.8 [0.8, 5.1] points.
+Masking MUSIC (C) in the same way raises it from 23.3 to 25.3\%, so at 1024 points the mask adds 2.0 to 4.1 points to every method, and the rotor tones and the spatial noise model partly complement each other.
+As B is a simple mask, these results concern tone masking and not tone-based methods in general.}
 
 \rev{\paragraph{Analysis settings.}
 The original papers report each method with different analysis settings.

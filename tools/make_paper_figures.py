@@ -69,7 +69,7 @@ def multidrone():
     not_flying = {"KU_Leuven", "AGH"}                     # held above the floor / stationary in the chamber
     names = []
     for r in rows:
-        name = r["drone"].replace(" (DREGON)", "\n(DREGON)").replace("Quadrotor in anechoic chamber", "Anechoic quad\n(AGH)")
+        name = r["drone"].replace(" (DREGON)", "\n(DREGON)").replace("Quadrotor in anechoic chamber", "Anechoic quad\n(AGH University\nof Kraków)")
         names.append(name + "*" if r["name"] in not_flying else name)
     fig, axes = plt.subplots(1, 2, figsize=(4.6, 2.75), gridspec_kw={"width_ratios": [1, 1.25]})
     y = np.arange(len(rows))
